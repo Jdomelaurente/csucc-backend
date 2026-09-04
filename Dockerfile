@@ -35,12 +35,12 @@ WORKDIR /var/www/html
 # Copy existing application directory contents
 COPY . /var/www/html
 
+# Install dependencies (Optimize for production)
+RUN composer install --no-dev --optimize-autoloader
+
 # Create .env from example if it doesn't exist, then generate APP_KEY
 RUN cp -n .env.example .env && \
     php artisan key:generate --force
-
-# Install dependencies (Optimize for production)
-RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
