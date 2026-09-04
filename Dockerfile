@@ -35,6 +35,10 @@ WORKDIR /var/www/html
 # Copy existing application directory contents
 COPY . /var/www/html
 
+# Create .env from example if it doesn't exist, then generate APP_KEY
+RUN cp -n .env.example .env && \
+    php artisan key:generate --force
+
 # Install dependencies (Optimize for production)
 RUN composer install --no-dev --optimize-autoloader
 
